@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>show</title>
+  <script>
+    function loadTable() {
+      // 获取本地表格文件路径
+      var tablePath = 'amazon-reviews.csv';
+
+      // 使用Fetch API发送请求
+      fetch(tablePath)
+        .then(response => response.text())
+        .then(data => {
+          // 将表格数据解析为JSON格式
+          var jsonData = JSON.parse(data);
+
+          // 创建表格元素
+          var table = document.createElement('table');
+          var thead = document.createElement('thead');
+          var tbody = document.createElement('tbody');
+
+          // 创建表头行和表头单元格
+          var headerRow = document.createElement('tr');
+          jsonData.forEach(item => {
+            var headerCell = document.createElement('th');
+            headerCell.textContent = item;
+            headerRow.appendChild(headerCell);
+          });
+
+          // 创建表格行和单元格，并将数据填充到表格中
+          jsonData.forEach(row => {
+            var rowObj = {};
+            row.forEach((value, index) => {
+              var cell = document.createElement('td');
+              cell.textContent = value;
+              rowObj[headerRow.children[index].textContent] = cell;
+            });
+            tbody.appendChild(rowObj);
+          });
+
+          // 将表头和表格数据添加到表格元素中
+          thead.appendChild(headerRow);
+          table.appendChild(thead);
+          table.appendChild(tbody);
+
+          // 将表格添加到网页中展示
+          document.body.appendChild(table);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</head>
+<body onload="loadTable()">
+  <h1>show</h1>
+</body>
+</html>
